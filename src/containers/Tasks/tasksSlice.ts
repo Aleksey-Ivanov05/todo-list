@@ -30,7 +30,6 @@ export const fetchTasks = createAsyncThunk(
     const tasks = tasksResponse.data;
     let newTasks: Task[] = [];
 
-
     if (tasks) {
       newTasks = Object.keys(tasks).map(id => {
         const task = tasks[id];
