@@ -54,13 +54,13 @@ export const updateTask = createAsyncThunk<void, UpdateTask, {state: RootState}>
     await axiosApi.put('tasks/' + task.id + '.json', newTask);
   }
 );
-//
-// export const deleteTask = createAsyncThunk<void, string>(
-//   'tasks/delete',
-//   async (id) => {
-//     await axiosApi.delete('tasks/' + id + '.json');
-//   }
-// )
+
+export const deleteTask = createAsyncThunk<void, string>(
+  'tasks/delete',
+  async (id) => {
+    await axiosApi.delete('tasks/' + id + '.json');
+  }
+)
 
 export const newTask = createAsyncThunk<void, string>(
   'tasks/new',
@@ -96,15 +96,15 @@ export const tasksSlice = createSlice({
     builder.addCase(updateTask.fulfilled, (state) => {
       state.fetchLoading = 'success';
     });
-    // builder.addCase(deleteTask.pending, (state) => {
-    //   state.deleteLoading = true;
-    // });
-    // builder.addCase(deleteTask.fulfilled, (state) => {
-    //   state.deleteLoading = false;
-    // });
-    // builder.addCase(deleteTask.rejected, (state) => {
-    //   state.deleteLoading = false;
-    // });
+    builder.addCase(deleteTask.pending, (state) => {
+      state.deleteLoading = true;
+    });
+    builder.addCase(deleteTask.fulfilled, (state) => {
+      state.deleteLoading = false;
+    });
+    builder.addCase(deleteTask.rejected, (state) => {
+      state.deleteLoading = false;
+    });
     builder.addCase(newTask.pending, (state) => {
       state.createLoading = true;
     });

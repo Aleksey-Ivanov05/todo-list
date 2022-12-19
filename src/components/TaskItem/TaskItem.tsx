@@ -1,8 +1,9 @@
 import React from 'react';
 import {Task} from "../../types";
-import {useAppDispatch} from "../../app/hooks";
-import {fetchTasks, updateTask} from "../../containers/Tasks/tasksSlice";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {deleteTask, fetchTasks, updateTask} from "../../containers/Tasks/tasksSlice";
 import './TaskItem.css';
+import ButtonSpinner from "../Spinner/ButtonSpinner";
 
 interface Props {
   task: Task;
@@ -14,7 +15,7 @@ const TaskItem: React.FC<Props> = ({task}) => {
   if (task.done) {
     className = ' Shadow';
   }
-  // const deleteLoadingState = useAppSelector(state => state.tasks.deleteLoading);
+  const deleteLoadingState = useAppSelector(state => state.tasks.deleteLoading);
   const onCheckboxChange = async () => {
     const newTask = {
       id: task.id,
@@ -27,10 +28,10 @@ const TaskItem: React.FC<Props> = ({task}) => {
     await dispatch(fetchTasks());
   }
 
-  // const onDelete = async () => {
-  //   await dispatch(deleteTask(task.id));
-  //   await dispatch(fetchTasks());
-  // }
+  const onDelete = async () => {
+    await dispatch(deleteTask(task.id));
+    await dispatch(fetchTasks());
+  }
 
   return (
     <div className={"p-2 border border-dark border-2 mb-5 row" + className}>
@@ -38,7 +39,7 @@ const TaskItem: React.FC<Props> = ({task}) => {
       <form className="col-1">
         <input className="form-check-input" type="checkbox" checked={task.done} onChange={onCheckboxChange}/>
       </form>
-      {/*<button className="btn btn-danger col-2" onClick={onDelete} disabled={deleteLoadingState}>{deleteLoadingState && <ButtonSpinner/>} Delete</button>*/}
+      <button className="btn btn-danger col-2" onClick={onDelete} disabled={deleteLoadingState}>{deleteLoadingState && <ButtonSpinner/>} Delete</button>
     </div>
   );
 };
